@@ -19,5 +19,10 @@ javascript
 
 ## How to Use This Repository 
 
+clone this repository
+```bash
+git clone https://github.com/sameer-panwar/cohort-assignments
+```
+
 Feel free to explore the assignments! If you find them helpful or have suggestions, let me know. Your feedback is always appreciated. 😊
 
