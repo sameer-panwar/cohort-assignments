@@ -41,9 +41,68 @@
  */
   const express = require('express');
   const bodyParser = require('body-parser');
+const { parse } = require('uuid');
   
   const app = express();
   
   app.use(bodyParser.json());
+  const database=[{title: "Cooking",
+    completed: true,
+    description: "i want to cook omlete"
+  },
+  {title: "vlogging",
+    completed: false,
+    description: "i want to cook omlete"
+  }];
+
+  app.get('/todos', (req, res) => {
+    const todosList = database.map((item) => `Task ${item.title} is ${item.completed?"Completed":"Not completed"}`);
+    res.status(200).json({ todos: todosList });
+  });
   
+  app.get('/todos/:id', (req, res)=>{
+    const id= parseInt(req.params.id) -1;
+    if(id>=0 && id<database.length){
+      res.status(200).json({yourTODO: database[id].title});
+    }else{
+      res.status(400).json({msg: "Invalid id"});
+    }
+  })
+
+  app.post('/', (req, res)=>{
+    let todo={
+      id:database.length+1,
+      title:req.body.title,
+      completed: req.body.completed,
+      description: req.body.description
+    }
+
+    database.push(todo);
+    res.status(201).json({msg: "Your todo is added"});
+  })
+
+  app.put('/', (req, res)=>{
+    let todo={
+      title: req.body.title,
+      completed: req.body.completed,
+    }
+
+    for(let i=0; i<database.length; i++){
+      if(database[i].title === todo.title){
+        database[i].completed = true;
+        res.status(201).send("Todo is updated");
+      }
+    }
+  })
+
+  app.delete('/todos/:id', (req, res)=>{
+    let id=parseInt(req.params.id)-1;
+    if(id>=0 && id<database.length){
+      res.status(201).send(`Deleted ${database[id].title} is being deleted`);
+      database.splice(id, 1);
+    }else{
+      res.status(404).send("invalid Id");
+    }
+  })
+
   module.exports = app;
