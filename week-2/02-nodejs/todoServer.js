@@ -41,11 +41,12 @@
  */
   const express = require('express');
   const bodyParser = require('body-parser');
-const { parse } = require('uuid');
+
   
   const app = express();
   
-  app.use(bodyParser.json());
+  app.use(express.json());
+
   const database=[{title: "Cooking",
     completed: true,
     description: "i want to cook omlete"
@@ -107,6 +108,12 @@ const { parse } = require('uuid');
     }else{
       res.status(404).send("invalid Id");
     }
+  })
+
+  app.use(function(err, req, res, next){
+    res.send({
+      msg: "The Server is not responding"
+    });
   })
 
   app.listen(3000);
