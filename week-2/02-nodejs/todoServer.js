@@ -70,6 +70,7 @@ const { parse } = require('uuid');
   })
 
   app.post('/', (req, res)=>{
+    
     let todo={
       id:database.length+1,
       title:req.body.title,
@@ -82,6 +83,7 @@ const { parse } = require('uuid');
   })
 
   app.put('/', (req, res)=>{
+
     let todo={
       title: req.body.title,
       completed: req.body.completed,
@@ -96,7 +98,9 @@ const { parse } = require('uuid');
   })
 
   app.delete('/todos/:id', (req, res)=>{
+
     let id=parseInt(req.params.id)-1;
+    
     if(id>=0 && id<database.length){
       res.status(201).send(`Deleted ${database[id].title} is being deleted`);
       database.splice(id, 1);
@@ -105,4 +109,4 @@ const { parse } = require('uuid');
     }
   })
 
-  module.exports = app;
+  app.listen(3000);
