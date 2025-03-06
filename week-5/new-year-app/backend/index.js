@@ -1,10 +1,13 @@
 const express =require("express");
 const { createTodo, updateTodo } = require("./type");
 const { todos } = require("./db");
+const cors=require("cors")
 
 const app=express();
 
 app.use(express.json());
+
+app.use(cors());
 
 
 app.post('/todo',async (req, res)=>{
@@ -23,13 +26,14 @@ app.post('/todo',async (req, res)=>{
         completed: false
     })
     
-    res.status(400).json({
+    res.status(200).json({
         msg: "Your todo is added"
     })
 })
 
 app.get('/todos',async (req, res)=>{
-    const todos= await todos.find({});
+    const Todo= await todos.find({});
+    res.json(Todo);
 })
 
 app.put('/completed',async (req, res)=>{
@@ -47,7 +51,7 @@ app.put('/completed',async (req, res)=>{
         _id: req.body.id
     },{
         completed: true
-    }).status(400).json({
+    }).status(200).json({
         msg: "your todo is completed"
     })
 })
